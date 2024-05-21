@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import TextField
+from django.utils import timezone
 
 
 class Base(models.Model):
@@ -15,32 +16,26 @@ class Delegacia(Base):
     localizacao = models.CharField(max_length=140, default='SOME STRING')
     titulo = models.CharField(max_length=255)
     url = models.URLField(unique=True)
-
+    criacao = models.DateTimeField(default=timezone.now)
 
     class Meta:
         verbose_name = 'Delegacia'
         verbose_name_plural = 'Delegacias'
 
-
-
     def __str__(self):
-        return self.localizacao
+        return self.titulo
 
 
 class Regiao(Base):
     cidade = models.CharField(max_length=255)
     cep = models.CharField(max_length=10)
 
-
     class Meta:
         verbose_name = "Regiao"
         verbose_name_plural = "Regioes"
 
-
     def __str__(self):
         return self.cidade
-
-
 
 
 class Avaliacao(Base):
@@ -49,7 +44,6 @@ class Avaliacao(Base):
     email = models.EmailField()
     comentario = models.TextField(blank=True, default='')
     avaliacao = models.DecimalField(max_digits=2, decimal_places=1)
-
 
     class Meta:
         verbose_name = "Avaliacao"
@@ -63,6 +57,3 @@ class Avaliacao(Base):
 
         def __str__(self):
             return f'{self.name} avaliou a consulta {self.delegacia} com a nota {self.avaliacao}'
-
-
-
